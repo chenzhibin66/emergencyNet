@@ -4,6 +4,7 @@ import com.calvin.biz.SosBiz;
 import com.calvin.dao.SosDao;
 import com.calvin.entity.Sos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author Calvin
  * @Description:
  */
+@Service("sosBiz")
 public class SosBizImpl implements SosBiz {
 
     @Autowired

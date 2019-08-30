@@ -4,4 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.calvin.dao.RescueWorkerDao">
 
+    <insert id="insert" parameterType="RescueWorker">
+        insert into rescue_worker (username,password) values (#{username,jdbcType=VARCHAR} ,#{password,jdbcType=VARCHAR} );
+    </insert>
+
+    <update id="update" parameterType="String">
+        update rescue_worker
+        set password = #{password,jdbcType=VARCHAR}
+        where username=#{username,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from rescue_worker where username =#{username,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="select" parameterType="String" resultType="RescueWorker">
+        select
+    </select>
 </mapper>

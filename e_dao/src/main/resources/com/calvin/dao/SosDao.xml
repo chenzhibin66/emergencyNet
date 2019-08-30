@@ -5,18 +5,19 @@
 <mapper namespace="com.calvin.dao.SosDao">
     <resultMap id="sosResult" type="Sos">
         <id column="sos_people" property="sosPeople" javaType="String"/>
+        <result column="message" property="message" javaType="Integer"/>
         <result column="longitude" property="longitude" javaType="Double"/>
         <result column="latitude" property="latitude" javaType="Double"/>
         <result column="post_time" property="postTime" javaType="Date"/>
 
-<association column="poster" property="poster" javaType="DisasterPeople">
-    <result column="account" property="account" javaType="String"/>
-</association>
+        <association column="poster" property="poster" javaType="DisasterPeople">
+            <result column="account" property="account" javaType="String"/>
+        </association>
     </resultMap>
 
     <insert id="insert" parameterType="Sos">
-        insert into sos (sosPeople,longitude,latitude,postTime)
-        values (#{sosPeople,jdbcType=VARCHAR} ,#{longitude} ,#{latitude} ,#{postTime,jdbcType=TIMESTAMP} );
+        insert into sos (sosPeople,message,longitude,latitude,postTime)
+        values (#{sosPeople,jdbcType=VARCHAR} ,#{message} ,#{longitude} ,#{latitude} ,#{postTime,jdbcType=TIMESTAMP} );
     </insert>
 
     <select id="select" resultMap="sosResult" parameterType="String">

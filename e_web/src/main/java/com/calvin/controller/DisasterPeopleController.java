@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Calvin
@@ -24,8 +26,8 @@ public class DisasterPeopleController {
     private DisasterPeopleBiz disasterPeopleBiz;
 
     @ResponseBody
-    @RequestMapping("/disasterRegister")
-    public OkInfo disasterRegister(HttpServletRequest request) {
+    @RequestMapping("/Register")
+    public OkInfo register(HttpServletRequest request) {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
         DisasterPeople disasterPeople = disasterPeopleBiz.get(account);
@@ -40,6 +42,25 @@ public class DisasterPeopleController {
         }
     }
 
-   
+    @ResponseBody
+    @RequestMapping("/login")
+    public DisasterLoginInfo login(HttpServletRequest request) {
+        String account = request.getParameter("account");
+        String password = request.getParameter("password");
+        DisasterPeople disasterPeople = disasterPeopleBiz.get(account);
+        if (disasterPeople != null && disasterPeople.getPassword().equals(password)) {
+            return new DisasterLoginInfo(1, "登录成功!", disasterPeople);
+        } else {
+            return new DisasterLoginInfo(0, "登录失败!", null);
+        }
+    }
 
+    @ResponseBody
+    @RequestMapping("/queryAllPeople")
+    public List<DisasterPeople> queryAllPeople() {
+        List<DisasterPeople> list = new ArrayList<>();
+        list = disasterPeopleBiz.getAll();
+        return list;
+
+    }
 }

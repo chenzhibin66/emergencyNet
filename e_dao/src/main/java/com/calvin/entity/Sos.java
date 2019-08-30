@@ -10,12 +10,22 @@ import java.util.Date;
  */
 public class Sos {
     private String sosPeople;
+    private int message;
     private double longitude;
     private double latitude;
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date  postTime;
 
     private DisasterPeople poster;
+
+
+    public int getMessage() {
+        return message;
+    }
+
+    public void setMessage(int message) {
+        this.message = message;
+    }
 
     public DisasterPeople getPoster() {
         return poster;
