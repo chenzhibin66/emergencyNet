@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.calvin.dao.DisasterPeopleDao">
+    <resultMap id="disasterResult" type="DisasterPeople">
+        <id column="account" property="account" javaType="String"/>
+        <result column="password" property="password" javaType="String"/>
+    </resultMap>
+    <insert id="insert" parameterType="string">
+      insert into disaster_people(account,password)
+      values (#{account,jdbcType=VARCHAR} ,#{password,jdbcType=VARCHAR}  )
+ </insert>
+
+    <select id="select" resultMap="disasterResult" parameterType="string">
+        sselect * from disaster_people where account=#{account,jdbcType=VARCHAR}
+    </select>
+
+    <update id="update" parameterType="DisasterPeople">
+        update disaster_people set password=#{password,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from disaster_people where account=#{account,jdbcType=VARCHAR}
+    </delete>
+
+
+    <select id="selectAll" resultType="DisasterPeople">
+        select account from disaster_people
+    </select>
+</mapper>
+
+
