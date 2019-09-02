@@ -6,17 +6,17 @@ package com.calvin.entity;
  */
 public class Shelter {
 
-    private int id;
+    private int sid;
     private String sname;
     private double slongitude;
     private double slatitude;
 
-    public int getId() {
-        return id;
+    public int getSid() {
+        return sid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSid(int sid) {
+        this.sid = sid;
     }
 
     public String getSname() {
