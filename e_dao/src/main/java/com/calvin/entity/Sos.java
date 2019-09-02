@@ -16,7 +16,7 @@ public class Sos {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private Date  postTime;
 
-    private DisasterPeople poster;
+    private User poster;
 
 
     public int getMessage() {
@@ -27,11 +27,11 @@ public class Sos {
         this.message = message;
     }
 
-    public DisasterPeople getPoster() {
+    public User getPoster() {
         return poster;
     }
 
-    public void setPoster(DisasterPeople poster) {
+    public void setPoster(User poster) {
         this.poster = poster;
     }
 

@@ -8,19 +8,17 @@ import java.util.Date;
  * @author Calvin
  * @Description:
  */
-public class DisasterPeople {
+public class User {
 
-    private String account;
+    private String username;
     private String password;
 
-
-
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

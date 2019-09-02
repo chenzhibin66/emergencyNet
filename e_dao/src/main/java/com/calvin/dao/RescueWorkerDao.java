@@ -14,9 +14,9 @@ public interface RescueWorkerDao {
 
     void update(RescueWorker rescueWorker);
 
-    void delete(String username);
+    void delete(String account);
 
-    RescueWorker select(String username);
+    RescueWorker select(String account);
 
     List<RescueWorker> selectAll();
 

@@ -1,8 +1,9 @@
 package com.calvin.controller;
 
 import com.calvin.biz.SosBiz;
-import com.calvin.dao.DisasterPeopleDao;
-import com.calvin.entity.DisasterPeople;
+import com.calvin.biz.UserDaoBiz;
+import com.calvin.dao.UserDao;
+import com.calvin.entity.User;
 import com.calvin.entity.Sos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,17 +26,17 @@ public class SosController {
     @Autowired
     private SosBiz sosBiz;
     @Autowired
-    private DisasterPeopleDao disasterPeopleDao;
+    private UserDaoBiz userDaoBiz;
 
 
     @ResponseBody
     @RequestMapping("/sendSos")
     public void sendSos(HttpServletRequest request) {
-        String account = request.getParameter("account");
+        String username = request.getParameter("username");
         int msg = Integer.parseInt(request.getParameter("message"));
         double longitude = Double.parseDouble(request.getParameter("longitude"));
         double latitude = Double.parseDouble(request.getParameter("latitude"));
-        DisasterPeople poster=disasterPeopleDao.select(account);
+        User poster = userDaoBiz.get(username);
         Sos sos = new Sos();
         sos.setPoster(poster);
         sos.setLongitude(longitude);
@@ -56,12 +57,12 @@ public class SosController {
     @ResponseBody
     @RequestMapping("/querySos")
     public Sos querySos(HttpServletRequest request) {
-        String account = request.getParameter("account");
-        DisasterPeople poster = new DisasterPeople();
-        poster = disasterPeopleDao.select(account);
+        String username = request.getParameter("username");
+        User poster = new User();
+        poster = userDaoBiz.get(username);
         Sos sos = new Sos();
         if (poster != null) {
-            sos = sosBiz.get(account);
+            sos = sosBiz.get(username);
             sos.setPoster(poster);
         }
         return sos;

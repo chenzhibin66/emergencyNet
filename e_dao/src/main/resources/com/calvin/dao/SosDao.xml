@@ -10,8 +10,8 @@
         <result column="latitude" property="latitude" javaType="Double"/>
         <result column="post_time" property="postTime" javaType="Date"/>
 
-        <association column="poster" property="poster" javaType="DisasterPeople">
-            <result column="account" property="account" javaType="String"/>
+        <association column="poster" property="poster" javaType="User">
+            <result column="account" property="username" javaType="String"/>
         </association>
     </resultMap>
 
@@ -21,15 +21,15 @@
     </insert>
 
     <select id="select" resultMap="sosResult" parameterType="String">
-        select d.account,s.longitude,s.latitude,s.postTime
-        from disaster_people d left join sos s
-        where d.account=s.sosPeople
+        select u.account,s.longitude,s.latitude,s.postTime
+        from user u left join sos s
+        where u.account=s.sosPeople
         and s.sosPeople=#{sosPeople,jdbcType=VARCHAR}
     </select>
 
     <select id="selectAll" resultMap="sosResult">
-        select d.account,s.longitude,s.latitude,s.postTime
-        from disaster_people d left join sos s
-        where d.account=s.sosPeople
+        select u.account,s.longitude,s.latitude,s.postTime
+        from user u left join sos s
+        where u.account=s.sosPeople
     </select>
 </mapper>
