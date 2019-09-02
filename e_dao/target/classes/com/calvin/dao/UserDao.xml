@@ -14,7 +14,7 @@
  </insert>
 
     <select id="select" resultMap="userResult" parameterType="string">
-        sselect * from user where username=#{username,jdbcType=VARCHAR}
+        select * from user where username=#{username,jdbcType=VARCHAR}
     </select>
 
     <update id="update" parameterType="User">

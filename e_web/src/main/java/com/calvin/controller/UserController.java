@@ -45,9 +45,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/login")
     public UserrLoginInfo login(HttpServletRequest request) {
-        String account = request.getParameter("account");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = userDaoBiz.get(account);
+        User user = userDaoBiz.get(username);
         if (user != null && user.getPassword().equals(password)) {
             return new UserrLoginInfo(1, "登录成功!", user);
         } else {
