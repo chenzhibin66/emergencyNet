@@ -26,11 +26,11 @@ public class UserController {
     private UserDaoBiz userDaoBiz;
 
     @ResponseBody
-    @RequestMapping("/Register")
+    @RequestMapping("/register")
     public OkInfo register(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = userDaoBiz.get(username);
+        User user = userDaoBiz.getByName(username);
         if (user != null) {
             return new OkInfo(2, "该账号已经存在!");
         } else {
@@ -47,7 +47,7 @@ public class UserController {
     public UserrLoginInfo login(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = userDaoBiz.get(username);
+        User user = userDaoBiz.getByName(username);
         if (user != null && user.getPassword().equals(password)) {
             return new UserrLoginInfo(1, "登录成功!", user);
         } else {
@@ -61,6 +61,5 @@ public class UserController {
         List<User> list = new ArrayList<>();
         list = userDaoBiz.getAll();
         return list;
-
     }
 }

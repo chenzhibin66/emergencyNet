@@ -26,15 +26,23 @@ public class UserDaoBizImpl implements UserDaoBiz {
         userDao.update(user);
     }
 
-    public void remove(String username) {
-        userDao.delete(username);
+    public void remove(int uid) {
+        userDao.delete(uid);
     }
 
-    public User get(String username) {
-        return userDao.select(username);
+    public User getById(int uid) {
+        return userDao.selectById(uid);
+    }
+
+    public User getByName(String username) {
+        return userDao.selectByName(username);
     }
 
     public List<User> getAll() {
         return userDao.selectAll();
+    }
+
+    public int querySosCount(int uid) {
+        return userDao.querySosCount(uid);
     }
 }

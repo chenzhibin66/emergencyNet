@@ -14,9 +14,13 @@ public interface UserDaoBiz {
 
     void edit(User user);
 
-    void remove(String username);
+    void remove(int uid);
 
-    User get(String username);
+    User getById(int uid);
+
+    User getByName(String username);
 
     List<User> getAll();
+
+    int querySosCount(int uid);
 }

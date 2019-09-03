@@ -9,9 +9,18 @@ import java.util.Date;
  * @Description:
  */
 public class User {
-
+    private int uid;
     private String username;
     private String password;
+
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public String getUsername() {
         return username;

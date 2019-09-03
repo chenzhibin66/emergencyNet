@@ -4,32 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.calvin.dao.SosDao">
     <resultMap id="sosResult" type="Sos">
-        <id column="sos_people" property="sosPeople" javaType="String"/>
+        <id column="sid" property="sid" javaType="Integer"/>
+        <result column="uid" property="uid" javaType="Integer"/>
         <result column="message" property="message" javaType="Integer"/>
         <result column="longitude" property="longitude" javaType="Double"/>
         <result column="latitude" property="latitude" javaType="Double"/>
         <result column="post_time" property="postTime" javaType="Date"/>
 
-        <association column="poster" property="poster" javaType="User">
-            <result column="account" property="username" javaType="String"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="uid" javaType="Integer"/>
+            <result column="username" property="username" javaType="String"/>
+            <result column="password" property="password" javaType="String"/>
         </association>
     </resultMap>
 
-    <insert id="insert" parameterType="Sos">
-        insert into sos (sosPeople,message,longitude,latitude,postTime)
-        values (#{sosPeople,jdbcType=VARCHAR} ,#{message} ,#{longitude} ,#{latitude} ,#{postTime,jdbcType=TIMESTAMP} );
+    <insert id="insert" parameterType="Sos" useGeneratedKeys="true" keyProperty="sid">
+        insert into sos(uid,message,longitude,latitude,postTime)
+        values (#{uid} ,#{message} ,#{longitude} ,#{latitude} ,#{postTime,jdbcType=TIMESTAMP} )
     </insert>
 
-    <select id="select" resultMap="sosResult" parameterType="String">
-        select u.account,s.longitude,s.latitude,s.postTime
-        from user u left join sos s
-        where u.account=s.sosPeople
-        and s.sosPeople=#{sosPeople,jdbcType=VARCHAR}
+    <select id="select" resultMap="sosResult" parameterType="integer">
+       select u.uid,u.username,s.sid,s.message,s.longitude,s.latitude,s.postTime  from user u inner join sos s
+       where u.uid=s.uid and u.uid=#{uid}
     </select>
 
     <select id="selectAll" resultMap="sosResult">
-        select u.account,s.longitude,s.latitude,s.postTime
-        from user u left join sos s
-        where u.account=s.sosPeople
+        select * from sos order by postTime desc
     </select>
 </mapper>

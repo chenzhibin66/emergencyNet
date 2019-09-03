@@ -2,7 +2,7 @@ package com.calvin.controller;
 
 import com.calvin.biz.SosBiz;
 import com.calvin.biz.UserDaoBiz;
-import com.calvin.dao.UserDao;
+import com.calvin.dto.OkInfo;
 import com.calvin.entity.User;
 import com.calvin.entity.Sos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +31,25 @@ public class SosController {
 
     @ResponseBody
     @RequestMapping("/sendSos")
-    public void sendSos(HttpServletRequest request) {
-        String username = request.getParameter("username");
+    public OkInfo sendSos(HttpServletRequest request) {
+        int uid = Integer.parseInt(request.getParameter("uid"));
         int msg = Integer.parseInt(request.getParameter("message"));
         double longitude = Double.parseDouble(request.getParameter("longitude"));
         double latitude = Double.parseDouble(request.getParameter("latitude"));
-        User poster = userDaoBiz.get(username);
+        int oldCount = userDaoBiz.querySosCount(uid);
         Sos sos = new Sos();
-        sos.setPoster(poster);
+        sos.setUid(uid);
         sos.setLongitude(longitude);
         sos.setLatitude(latitude);
         sos.setMessage(msg);
         sos.setPostTime(new Date());
         sosBiz.sos(sos);
+        int newCount = userDaoBiz.querySosCount(uid);
+        if (newCount == oldCount + 1) {
+            return new OkInfo(1, "求救信息发送成功!");
+        } else {
+            return new OkInfo(0, "求救信息发送失败!");
+        }
     }
 
     @ResponseBody
@@ -56,16 +62,11 @@ public class SosController {
 
     @ResponseBody
     @RequestMapping("/querySos")
-    public Sos querySos(HttpServletRequest request) {
-        String username = request.getParameter("username");
-        User poster = new User();
-        poster = userDaoBiz.get(username);
-        Sos sos = new Sos();
-        if (poster != null) {
-            sos = sosBiz.get(username);
-            sos.setPoster(poster);
-        }
-        return sos;
+    public List<Sos> querySosByUid(HttpServletRequest request) {
+        int uid = Integer.parseInt(request.getParameter("uid"));
+        List<Sos> list = new ArrayList<>();
+        list = sosBiz.get(uid);
+        return list;
     }
 
 }

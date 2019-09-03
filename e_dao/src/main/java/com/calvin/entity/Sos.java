@@ -9,15 +9,39 @@ import java.util.Date;
  * @Description:
  */
 public class Sos {
-    private String sosPeople;
+    private int sid;
+    private int uid;
     private int message;
     private double longitude;
     private double latitude;
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-    private Date  postTime;
+    private Date postTime;
 
-    private User poster;
+    private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public int getMessage() {
         return message;
@@ -25,30 +49,6 @@ public class Sos {
 
     public void setMessage(int message) {
         this.message = message;
-    }
-
-    public User getPoster() {
-        return poster;
-    }
-
-    public void setPoster(User poster) {
-        this.poster = poster;
-    }
-
-    public Date getPostTime() {
-        return postTime;
-    }
-
-    public void setPostTime(Date postTime) {
-        this.postTime = postTime;
-    }
-
-    public String getSosPeople() {
-        return sosPeople;
-    }
-
-    public void setSosPeople(String sosPeople) {
-        this.sosPeople = sosPeople;
     }
 
     public double getLongitude() {
@@ -65,5 +65,13 @@ public class Sos {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public Date getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(Date postTime) {
+        this.postTime = postTime;
     }
 }

@@ -12,7 +12,7 @@ public interface SosBiz {
 
     void sos(Sos sos);
 
-    Sos get(String sosPeople);
+    List<Sos> get(int uid);
 
     List<Sos> getAll();
 }

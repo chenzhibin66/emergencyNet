@@ -5,29 +5,40 @@
 
 <mapper namespace="com.calvin.dao.UserDao">
     <resultMap id="userResult" type="User">
-        <id column="username" property="username" javaType="String"/>
+        <id column="uid" property="uid" javaType="Integer"/>
+        <result column="username" property="username" javaType="String"/>
         <result column="password" property="password" javaType="String"/>
     </resultMap>
-    <insert id="insert" parameterType="string">
+    <insert id="insert" useGeneratedKeys="true"  keyProperty="uid" parameterType="User" >
       insert into user(username,password)
       values (#{username,jdbcType=VARCHAR}  ,#{password,jdbcType=VARCHAR}  )
  </insert>
 
-    <select id="select" resultMap="userResult" parameterType="string">
+    <select id="selectById" resultMap="userResult" parameterType="int">
+        select * from user where uid=#{uid}
+    </select>
+
+    <select id="selectByName" resultMap="userResult" parameterType="string">
         select * from user where username=#{username,jdbcType=VARCHAR}
     </select>
 
     <update id="update" parameterType="User">
         update user set password=#{password,jdbcType=VARCHAR}
+        where uid=#{uid}
     </update>
 
-    <delete id="delete" parameterType="String">
-        delete from user where username=#{account,jdbcType=VARCHAR}
+    <delete id="delete" parameterType="int">
+        delete from user where uid=#{uid}
     </delete>
 
 
     <select id="selectAll" resultType="User">
-        select account from disaster_people
+        select * from user
+    </select>
+
+    <select id="querySosCount" parameterType="int" resultType="int">
+        select count(*)
+        from sos where sos.uid=#{uid}
     </select>
 </mapper>
 

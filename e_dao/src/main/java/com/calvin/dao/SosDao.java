@@ -12,7 +12,8 @@ public interface SosDao {
 
     void insert(Sos sos);
 
-    Sos select(String sosPeople);
+    List<Sos> select(int uid);
 
     List<Sos> selectAll();
+
 }
