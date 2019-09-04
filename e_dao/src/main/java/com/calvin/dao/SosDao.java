@@ -16,4 +16,6 @@ public interface SosDao {
 
     List<Sos> selectAll();
 
+    void delete(int sid);
+
 }

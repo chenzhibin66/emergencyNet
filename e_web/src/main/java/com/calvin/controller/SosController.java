@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Calvin
@@ -69,4 +70,16 @@ public class SosController {
         return list;
     }
 
+
+    @RequestMapping("/sos_list")
+    public String sosList(Map<String,Object> map){
+        map.put("list",sosBiz.getAll());
+        return "sos_list";
+    }
+
+    @RequestMapping(value = "/remove", params = "sid")
+    public String remove (int sid) {
+        sosBiz;
+        return "redirect:/sos/sos_list";
+    }
 }

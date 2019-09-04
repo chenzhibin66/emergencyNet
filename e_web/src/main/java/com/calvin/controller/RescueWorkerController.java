@@ -53,9 +53,4 @@ public class RescueWorkerController {
         }
     }
 
-
-    @RequestMapping("/index")
-    public String index() {
-        return "index";
-    }
 }

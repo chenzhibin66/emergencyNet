@@ -15,4 +15,6 @@ public interface SosBiz {
     List<Sos> get(int uid);
 
     List<Sos> getAll();
+
+    void remove(int sid);
 }

@@ -30,4 +30,8 @@ public class SosBizImpl implements SosBiz {
     public List<Sos> getAll() {
         return sosDao.selectAll();
     }
+
+    public void remove(int sid) {
+
+    }
 }

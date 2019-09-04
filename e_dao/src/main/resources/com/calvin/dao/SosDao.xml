@@ -31,4 +31,8 @@
     <select id="selectAll" resultMap="sosResult">
         select * from sos order by postTime desc
     </select>
+
+    <delete id="delete" parameterType="int">
+        delete from sos where sid=#{sid}
+    </delete>
 </mapper>
