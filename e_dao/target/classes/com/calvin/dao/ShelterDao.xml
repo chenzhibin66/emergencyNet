@@ -8,4 +8,11 @@
         select sid,sname,slongitude,slatitude
         from shelter order by sid asc
     </select>
+    
+    <insert id="insert" parameterType="Shelter" useGeneratedKeys="true" keyProperty="sid">
+        insert into shelter (sname,slongitude,slatitude)
+        values (#{sname,jdbcType=VARCHAR} ,#{slongitude} ,#{slatitude} );
+    </insert>
+
+
 </mapper>

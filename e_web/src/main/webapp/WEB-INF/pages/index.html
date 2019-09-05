@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk"/>
+    <title>EmergencyRecue</title>
+    <link href="../../styles/common.css" rel="stylesheet">
+    <script src="../../scripts/Plugin/jquery-3.3.1.min.js"></script>
+    <script src="../../scripts/Plugin/echarts.min.js"></script>
+    <script src="../../scripts/Plugin/bmap.min.js"></script>
+    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=i1BK7eqButXIrlmq6AQKwru3bq3zi3MS"></script>
+    <script src="../../scripts/common.js"></script>
+    <script src="../../scripts/index.js"></script>
+    <script src="../../scripts/Plugin/laydate/laydate.js"></script>
+
+</head>
+
+<body>
+
+
+<!--顶部-->
+<header class="header_center left">
+
+    <div class="header_center header_center" style="width: 380px;height: 60px">
+
+        <h2><strong>灾情分布</strong></h2>
+
+    </div>
+    <div class="right nav text_right">
+        <ul>
+
+        </ul>
+    </div>
+
+</header>
+
+<!--todo:添加button的Herf访问服务器存点位并重新渲染index-->
+<div class="header left" style="width: 500px;height: 50px;padding-top: 20px">
+    <div class="header left" style="width: 800px;height: 40px;padding-left: 30px">
+        <form>
+            <input id="lng" type="text" placeholder="经度"
+                   style="width: 280px;height: 40px;border-radius: 3px;text-indent: 1em;border: 1px solid#4b8df8;">
+            <input id="lat" type="text" placeholder="纬度"
+                   style="width: 280px;height: 40px;border-radius: 3px;text-indent: 1em;border: 1px solid#4b8df8;">
+            <input id="name" type="hidden">
+            <button id="send" type="button" class="btn btn-primary btn-lg" style="margin-left:20px;text-decoration:none;
+	background:#2f435e;
+	color:#ffffff;
+
+	padding: 10px 30px 10px 30px;
+	font-size:16px;
+	font-family: 微软雅黑,宋体,Arial,Helvetica,Verdana,sans-serif;
+	font-weight:bold;
+	border-radius:3px;
+
+	-webkit-transition:all linear 0.30s;
+	-moz-transition:all linear 0.30s;
+	transition:all linear 0.30s;
+"><span class="glyphicon glyphicon-search"></span>发送
+            </button>
+        </form>
+    </div>
+
+</div>
+<!--内容部分-->
+<div class="con left">
+    <!--数据总概-->
+    <div class="con_div">
+        <div class="con_div_text left">
+            <div class="con_div_text01 left">
+                <div class="left text01_div">
+                    <p>求助人数</p>
+                    <p id="personNum"></p>
+                </div>
+            </div>
+            <div class="con_div_text01 right">
+                <div class="left text01_div">
+                    <p>救援中心</p>
+                    <p id="areaNum"></p>
+                </div>
+            </div>
+        </div>
+        <div class="con_div_text left">
+            <div class="con_div_text01 left">
+                <div class="left text01_div">
+                    <p>食物</p>
+                    <p id="1" class="sky"></p>
+                </div>
+            </div>
+            <div class="con_div_text01 right">
+                <div class="left text01_div">
+                    <p>水</p>
+                    <p id="2" class="sky"></p>
+                </div>
+            </div>
+        </div>
+        <div class="con_div_text left">
+
+            <div class="con_div_text01 left">
+                <div class="left text01_div">
+                    <p>医疗用品</p>
+                    <p id="3" class="org"></p>
+                </div>
+            </div>
+            <div class="con_div_text01 right">
+                <div class="left text01_div">
+                    <p>生活用品</p>
+                    <p id="4" class="org"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--统计分析图-->
+    <div class="div_any">
+        <div class="div_any_child div_height">
+            <!--<div class="div_any_title any_title_width"style="width: max-content"><img src="../web/images/title_0.png">受灾分布图 </div>-->
+            <!--<div id="mapChart" style="width:97.5%;height:95%;padding-left: 2%;padding-top:3%"></div>-->
+            <div id="showChart" style="width:97.5%;height:95%;padding-left: 2%;padding-top:3%"
+                 class="text_center"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        // 百度地图API功能
+        var map = new BMap.Map("showChart");    // 创建Map实例
+        var point = new BMap.Point(112.404, 38.015);
+        map.centerAndZoom(point, 9);  // 初始化地图,设置中心点坐标和地图级别
+        //添加地图类型控件
+        map.addControl(new BMap.MapTypeControl({
+            mapTypes: [
+                BMAP_NORMAL_MAP,
+                BMAP_HYBRID_MAP
+            ]
+        }));
+        map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+
+        map.addEventListener("click", function (e) {   //点击事件
+            if (!e.overlay) {
+                var x = e.point.lng;
+                var y = e.point.lat;
+                var newPoint = new BMap.Point(x, y);
+                var myIcon = new BMap.Icon(
+                    "http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {
+                        offset: new BMap.Size(10, 25), // 指定定位位置
+                        imageOffset: new BMap.Size(0, 0 - 10 * 25) // 设置图片偏移
+                    });
+                var newMarker = new BMap.Marker(newPoint, {icon: myIcon});
+                map.addOverlay(newMarker);
+                $('#lng').val(x);
+                $('#lat').val(y);
+
+                var myGeo = new BMap.Geocoder();
+                // 根据坐标得到地址描述
+                myGeo.getLocation(newPoint, function (result) {
+                    if (result) {
+                        $('#name').val(result.address);
+                    }
+                });
+
+            }
+        });
+
+
+        $('#send').on('click', function () {
+            var lng = $('#lng').val();
+            var lat = $('#lat').val();
+            var name = $('#name').val();
+            $.getJSON('/shelter/addShelter?slongitude=' + lng + '&slatitude=' + lat + '&sname=' + name, function success(data) {
+                console.log(111111);
+                alert('发送成功');
+                location.reload();
+            })
+        });
+
+        showHelpPerson(map);
+        showHelpArea(map);
+
+
+    });
+
+    function showHelpArea(map) {
+         $.getJSON("/shelter/queryShelter", function success(data) {
+
+
+
+            var helpAreaNum = data.length;
+            var areaList = [];
+
+            for (var i in data) {
+                var area = {};
+                for (var key in data[i]) {
+                    if (key == 'sid')
+                        area.id = data[i][key];
+                    if (key == 'sname')
+                        area.name = data[i][key];
+                    if (key == 'slongitude')
+                        area.lng = data[i][key];
+                    if (key == 'slatitude')
+                        area.lat = data[i][key];
+                }
+
+                areaList.push(area);
+            }
+
+            console.log(areaList);
+            $('#areaNum').text(helpAreaNum);
+
+            console.log(map == undefined);
+            markAreaInfo(areaList, map);
+         });
+    }
+
+    function showHelpPerson(map) {
+         $.getJSON("/sos/queryAllSos", function success(data) {
+
+
+            var userList = [];
+            var food = 0;
+            var water = 0;
+            var medicine = 0;
+            var life = 0;
+            var personNum = data.length;
+
+            for (var i in data) {
+                var userInfo = {};
+                for (var key in data[i]) {
+                    if (key == 'sid')
+                        userInfo.id = data[i][key];
+                    if (key == 'message') {
+                        var message = data[i][key] + '';
+                        userInfo.need = '';
+                        for (var index in message) {
+                            if (message[index] == 1) {
+                                userInfo.need = userInfo.need + '食物 ';
+                                food = food + 1;
+                            }
+                            if (message[index] == 2) {
+                                userInfo.need = userInfo.need + '水 ';
+                                water = water + 1;
+                            }
+                            if (message[index] == 3) {
+                                userInfo.need = userInfo.need + '医疗用品 ';
+                                medicine = medicine + 1;
+                            }
+                            if (message[index] == 4) {
+                                userInfo.need = userInfo.need + '生活用品 ';
+                                life = life + 1;
+                            }
+                        }
+                    }
+                    if (key == 'longitude')
+                        userInfo.lng = data[i][key];
+                    if (key == 'latitude')
+                        userInfo.lat = data[i][key];
+                    if (key == 'user') {
+                        var user = data[i][key];
+                        for (var att in user) {
+                            if (att == 'username')
+                                userInfo.name = user.username;
+                        }
+                    }
+                    if (key == 'postTime')
+                        userInfo.time = new Date(data[i][key]).Format("yyyy-MM-dd hh:mm:ss");
+                }
+
+                userList.push(userInfo);
+            }
+
+            $('#personNum').text(personNum);
+            $('#1').text(food);
+            $('#2').text(water);
+            $('#3').text(medicine);
+            $('#4').text(life);
+
+            console.log(food);
+            console.log(water);
+            console.log(medicine);
+            console.log(life);
+            console.log(userList);
+
+            markPersonInfo(userList, map);
+
+         });
+    }
+
+    function markAreaInfo(areaList, map) {
+        for (var i in areaList) {
+            //位置信息
+            var points = new BMap.Point(areaList[i].lng, areaList[i].lat);//创建坐标点
+            //窗口信息
+            var opts = {
+                width: 250,
+                height: 80,
+                title: '救援中心' + areaList[i].id + ':' + areaList[i].name
+            };
+
+            var content = '<br/>经纬度：' + areaList[i].lng+' ' +areaList[i].lat;
+            //窗口内容
+            var infoWindow = new BMap.InfoWindow(content, opts);
+
+            showMark(points, infoWindow, 2, map);
+        }
+    }
+
+    function markPersonInfo(userList, map) {
+        for (var i in userList) {
+            //位置信息
+            var points = new BMap.Point(userList[i].lng, userList[i].lat);//创建坐标点
+            //窗口信息
+            var opts = {
+                width: 250,
+                height: 100,
+                title: '求救信息' + userList[i].id + ':' + userList[i].name
+            };
+
+            var content = '需求：' + userList[i].need + '<br/>时间：' + userList[i].time + '<br/>经纬度：' + userList[i].lng+' ' +userList[i].lat;
+            //窗口内容
+            var infoWindow = new BMap.InfoWindow(content, opts);
+
+            showMark(points, infoWindow, 1, map);
+        }
+    }
+
+    function showMark(points, infoWindows, flag, map) {
+        //flag为1表示求救信息
+        if (flag === 1) {
+            var markers = new BMap.Marker(points);
+            map.addOverlay(markers);
+
+        } else {
+            var myIcon = new BMap.Icon(
+                "http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {
+                    offset: new BMap.Size(10, 25), // 指定定位位置
+                    imageOffset: new BMap.Size(0, 0 - 10 * 25) // 设置图片偏移
+                });
+            var markers = new BMap.Marker(points, {icon: myIcon});
+            map.addOverlay(markers);
+        }
+
+        markers.addEventListener("click", function (event) {
+            map.openInfoWindow(infoWindows, points);//参数：窗口、点  根据点击的点出现对应的窗口
+        });
+    }
+
+
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+</script>
+
+</body>
+</html>

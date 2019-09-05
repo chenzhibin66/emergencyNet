@@ -22,4 +22,10 @@ public class ShelterBizImpl implements ShelterBiz {
     public List<Shelter> getAll() {
         return shelterDao.selectAll();
     }
+
+    public void add(Shelter shelter) {
+       shelterDao.insert(shelter);
+    }
+
+
 }

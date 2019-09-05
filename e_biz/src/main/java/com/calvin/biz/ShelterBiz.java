@@ -11,4 +11,8 @@ import java.util.List;
 public interface ShelterBiz {
 
     List<Shelter> getAll();
+
+    void add(Shelter shelter);
+
+
 }

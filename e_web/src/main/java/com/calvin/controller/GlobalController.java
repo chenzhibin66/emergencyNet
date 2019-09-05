@@ -1,7 +1,6 @@
 package com.calvin.controller;
 
 import com.calvin.biz.GlobalBiz;
-import com.calvin.dao.AdminDao;
 import com.calvin.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +31,12 @@ public class GlobalController {
             return "redirect:to_login";
         }
         session.setAttribute("admin",admin);
-        return "redirect:/sos/sos_list";
+        return "redirect:index";
     }
 
+
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
+    }
 }

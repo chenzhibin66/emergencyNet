@@ -9,7 +9,7 @@
         <result column="message" property="message" javaType="Integer"/>
         <result column="longitude" property="longitude" javaType="Double"/>
         <result column="latitude" property="latitude" javaType="Double"/>
-        <result column="post_time" property="postTime" javaType="Date"/>
+        <result column="postTime" property="postTime" javaType="java.util.Date"/>
 
         <association property="user" javaType="User">
             <id column="uid" property="uid" javaType="Integer"/>
@@ -29,7 +29,8 @@
     </select>
 
     <select id="selectAll" resultMap="sosResult">
-        select * from sos order by postTime desc
+         select u.uid,u.username,s.sid,s.message,s.longitude,s.latitude,s.postTime  from user u inner join sos s
+       where u.uid=s.uid
     </select>
 
     <delete id="delete" parameterType="int">

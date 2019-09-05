@@ -26,4 +26,12 @@ public class ShelterController {
     public List<Shelter> queryShelter() {
         return shelterBiz.getAll();
     }
+
+    @ResponseBody
+    @RequestMapping("/addShelter")
+    public int addShelter(Shelter shelter) {
+        System.out.println(shelter);
+        shelterBiz.add(shelter);
+        return 1;
+    }
 }

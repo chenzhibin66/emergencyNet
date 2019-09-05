@@ -58,6 +58,7 @@ public class SosController {
     public List<Sos> queryAllSos() {
         List<Sos> list = new ArrayList<>();
         list = sosBiz.getAll();
+        System.out.println(list.get(0).getPostTime());
         return list;
     }
 
@@ -71,15 +72,4 @@ public class SosController {
     }
 
 
-    @RequestMapping("/sos_list")
-    public String sosList(Map<String,Object> map){
-        map.put("list",sosBiz.getAll());
-        return "sos_list";
-    }
-
-    @RequestMapping(value = "/remove", params = "sid")
-    public String remove (int sid) {
-        sosBiz;
-        return "redirect:/sos/sos_list";
-    }
 }

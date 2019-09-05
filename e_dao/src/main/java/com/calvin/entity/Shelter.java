@@ -40,6 +40,17 @@ public class Shelter {
     }
 
     public void setSlatitude(double slatitude) {
+
         this.slatitude = slatitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Shelter{" +
+                "sid=" + sid +
+                ", sname='" + sname + '\'' +
+                ", slongitude=" + slongitude +
+                ", slatitude=" + slatitude +
+                '}';
     }
 }
