@@ -12,10 +12,10 @@ public interface SosDao {
 
     void insert(Sos sos);
 
-    List<Sos> select(int uid);
+    List<Sos> select(int id);
 
     List<Sos> selectAll();
 
-    void delete(int sid);
+    void delete(int id);
 
 }

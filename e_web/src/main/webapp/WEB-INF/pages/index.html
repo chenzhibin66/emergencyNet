@@ -57,6 +57,14 @@
 	transition:all linear 0.30s;
 "><span class="glyphicon glyphicon-search"></span>发送
             </button>
+            <button class="need" type="button" style="margin-left:10px;
+	background:transparent;
+	color:#ffffff;
+
+	font-size:16px;
+	border-radius:3px;
+">物资统计
+            </button>
         </form>
     </div>
 
@@ -120,6 +128,20 @@
     </div>
 </div>
 
+
+
+<div class="el-dialog" style="display:none">
+    <div class="xc_layer"></div>
+    <div class="popBox" id="printView">
+        <div class="ttBox"><span class="tt" id="reportTitle">物资需求分布</span><img src="../../images/close.png" style="width: 30px;float: right;cursor: pointer;" title="关闭弹窗" class="close"></div>
+        <div class="txtBox" id="el-dialog_body">
+            <div class="div_any_child">
+                <p id="pieChart" class="p_chart" _echarts_instance_="ec_1567726116477" style="-webkit-tap-highlight-color: transparent; user-select: none; position: relative;"><div style="position: relative; overflow: hidden; width: 280px; height: 288px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="501" height="432" style="position: absolute; left: 0px; top: 0px; width: 334px; height: 288px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div style="position: absolute; display: none; border-style: solid; white-space: nowrap; z-index: 9999999; transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s; background-color: rgba(50, 50, 50, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); padding: 5px; left: 171px; top: 70px; pointer-events: none;">发病人数<br>老年(60岁以上)<br>175人</div></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 
     $(function () {
@@ -178,13 +200,62 @@
 
         showHelpPerson(map);
         showHelpArea(map);
+        setInterval(function () {
+            showHelpPerson(map);
+            showHelpArea(map);
+        }, 5000);
 
 
     });
 
-    function showHelpArea(map) {
-         $.getJSON("/shelter/queryShelter", function success(data) {
+    function showChart(food,water,medicine,life) {
+        console.log("123");
+        var myChart = echarts.init(document.getElementById('pieChart'));
+        // 指定图表的配置项和数据
+        option = {
+            title : {
+                text: '',
+                subtext: '',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['食物','水','医疗','生活用品']
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:food, name:'食物'},
+                        {value:water, name:'水'},
+                        {value:medicine, name:'医疗'},
+                        {value:life, name:'生活用品'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
 
+
+    function showHelpArea(map) {
+        $.getJSON("/shelter/queryShelter", function success(data) {
 
 
             var helpAreaNum = data.length;
@@ -211,11 +282,11 @@
 
             console.log(map == undefined);
             markAreaInfo(areaList, map);
-         });
+        });
     }
 
     function showHelpPerson(map) {
-         $.getJSON("/sos/queryAllSos", function success(data) {
+        $.getJSON("/sos/queryAllSos", function success(data) {
 
 
             var userList = [];
@@ -282,9 +353,17 @@
             console.log(life);
             console.log(userList);
 
+            $(".need").click(function(e) {
+                $(".el-dialog").toggle();
+                showChart(food,water,medicine,life);
+            });
+            $(".close").click(function(e){
+                $(".el-dialog").hide().removeClass("show");
+            });
+
             markPersonInfo(userList, map);
 
-         });
+        });
     }
 
     function markAreaInfo(areaList, map) {
@@ -298,7 +377,7 @@
                 title: '救援中心' + areaList[i].id + ':' + areaList[i].name
             };
 
-            var content = '<br/>经纬度：' + areaList[i].lng+' ' +areaList[i].lat;
+            var content = '<br/>经纬度：' + areaList[i].lng + ' ' + areaList[i].lat;
             //窗口内容
             var infoWindow = new BMap.InfoWindow(content, opts);
 
@@ -317,7 +396,7 @@
                 title: '求救信息' + userList[i].id + ':' + userList[i].name
             };
 
-            var content = '需求：' + userList[i].need + '<br/>时间：' + userList[i].time + '<br/>经纬度：' + userList[i].lng+' ' +userList[i].lat;
+            var content = '需求：' + userList[i].need + '<br/>时间：' + userList[i].time + '<br/>经纬度：' + userList[i].lng + ' ' + userList[i].lat;
             //窗口内容
             var infoWindow = new BMap.InfoWindow(content, opts);
 

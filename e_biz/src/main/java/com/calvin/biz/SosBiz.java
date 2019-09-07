@@ -12,9 +12,9 @@ public interface SosBiz {
 
     void sos(Sos sos);
 
-    List<Sos> get(int uid);
+    List<Sos> get(int id);
 
     List<Sos> getAll();
 
-    void remove(int sid);
+    void remove(int id);
 }
