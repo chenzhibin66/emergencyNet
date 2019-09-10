@@ -17,4 +17,6 @@ public interface SosBiz {
     List<Sos> getAll();
 
     void remove(int id);
+
+     int countSos();
 }

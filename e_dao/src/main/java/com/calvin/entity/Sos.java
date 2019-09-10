@@ -12,7 +12,7 @@ public class Sos {
     private int id;
     private double longitude;
     private double latitude;
-    private String message;
+    private int message;
 
 
     public int getId() {
@@ -39,11 +39,21 @@ public class Sos {
         this.latitude = latitude;
     }
 
-    public String getMessage() {
+    public int getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(int message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "Sos{" +
+                "id=" + id +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", message=" + message +
+                '}';
     }
 }

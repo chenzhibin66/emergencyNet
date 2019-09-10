@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.calvin.dao.SosDao">
     <resultMap id="sosResult" type="Sos">
-        <id property="id" column="id" javaType="int"/>
+        <id property="id" column="id" javaType="Integer"/>
         <result property="longitude" column="longitude" javaType="Double"/>
         <result property="latitude" column="latitude" javaType="Double"/>
-        <result property="message" column="message" javaType="String"/>
+        <result property="message" column="message" javaType="Integer"/>
     </resultMap>
 
     <insert id="insert" parameterType="Sos" useGeneratedKeys="true">
@@ -26,4 +26,8 @@
     <delete id="delete" parameterType="int">
         delete from sos where id=#{id}
     </delete>
+
+    <select id="sosCount" parameterType="int" resultType="int">
+        select count(*) from sos
+    </select>
 </mapper>

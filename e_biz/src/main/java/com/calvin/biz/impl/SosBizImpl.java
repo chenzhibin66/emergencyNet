@@ -34,4 +34,8 @@ public class SosBizImpl implements SosBiz {
     public void remove(int sid) {
 
     }
+
+    public int countSos() {
+        return sosDao.sosCount();
+    }
 }

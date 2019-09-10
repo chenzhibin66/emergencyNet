@@ -4,36 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.calvin.dao.SosDao">
     <resultMap id="sosResult" type="Sos">
-        <id column="sid" property="sid" javaType="Integer"/>
-        <result column="uid" property="uid" javaType="Integer"/>
-        <result column="message" property="message" javaType="Integer"/>
-        <result column="longitude" property="longitude" javaType="Double"/>
-        <result column="latitude" property="latitude" javaType="Double"/>
-        <result column="postTime" property="postTime" javaType="java.util.Date"/>
-
-        <association property="user" javaType="User">
-            <id column="uid" property="uid" javaType="Integer"/>
-            <result column="username" property="username" javaType="String"/>
-            <result column="password" property="password" javaType="String"/>
-        </association>
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="longitude" column="longitude" javaType="Double"/>
+        <result property="latitude" column="latitude" javaType="Double"/>
+        <result property="message" column="message" javaType="Integer"/>
     </resultMap>
 
-    <insert id="insert" parameterType="Sos" useGeneratedKeys="true" keyProperty="sid">
-        insert into sos(uid,message,longitude,latitude,postTime)
-        values (#{uid} ,#{message} ,#{longitude} ,#{latitude} ,#{postTime,jdbcType=TIMESTAMP} )
+    <insert id="insert" parameterType="Sos" useGeneratedKeys="true">
+        insert into sos(longitude,latitude,message)
+        values (#{longitude} ,#{latitude} ,#{message,jdbcType=VARCHAR} )
     </insert>
 
     <select id="select" resultMap="sosResult" parameterType="integer">
-       select u.uid,u.username,s.sid,s.message,s.longitude,s.latitude,s.postTime  from user u inner join sos s
-       where u.uid=s.uid and u.uid=#{uid}
+      sselect * from sos where id=#{id}
     </select>
 
     <select id="selectAll" resultMap="sosResult">
-         select u.uid,u.username,s.sid,s.message,s.longitude,s.latitude,s.postTime  from user u inner join sos s
-       where u.uid=s.uid
+        select * from sos
     </select>
 
     <delete id="delete" parameterType="int">
-        delete from sos where sid=#{sid}
+        delete from sos where id=#{id}
     </delete>
+
+    <select id="sosCount" parameterType="int" resultType="int">
+        select count(*) from sos
+    </select>
 </mapper>

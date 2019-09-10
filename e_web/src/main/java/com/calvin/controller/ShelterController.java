@@ -24,7 +24,11 @@ public class ShelterController {
     @ResponseBody
     @RequestMapping("/queryShelter")
     public List<Shelter> queryShelter() {
+        for (int i = 0; i <shelterBiz.getAll().size() ; i++) {
+            System.out.println(shelterBiz.getAll().get(i));
+        }
         return shelterBiz.getAll();
+
     }
 
     @ResponseBody

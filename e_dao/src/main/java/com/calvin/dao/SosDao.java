@@ -18,4 +18,6 @@ public interface SosDao {
 
     void delete(int id);
 
+    int sosCount();
+
 }
